@@ -203,7 +203,7 @@ it('4 * 5 = 0 -> 0', () => {
 });
 
 
-it('1 + 2 = 3 = -> 5', () => {
+it('1 / 2 = -> 0.5', () => {
   const app = mount(<CalcApp />);
 
   const rows = app.find('.calc-row');
@@ -211,7 +211,30 @@ it('1 + 2 = 3 = -> 5', () => {
   const row3 = rows.at(3);
   const btn1 = row3.find(CalcButton).at(0);
   const btn2 = row3.find(CalcButton).at(1);
-  const btn3 = row3.find(CalcButton).at(2);
+
+
+  const row4 = rows.at(4);
+  const btnEqual = row4.find(CalcButton).at(2);
+
+  const row0 = rows.at(0);
+  const btnDiv = row0.find(CalcButton).at(3);
+
+  btn1.simulate('click');
+  btnDiv.simulate('click');
+  btn2.simulate('click');
+  btnEqual.simulate('click');
+
+  expect(app.find('.calc-display').text()).toBe('0.5');
+});
+
+it('1 + 2 = -> 3', () => {
+  const app = mount(<CalcApp />);
+
+  const rows = app.find('.calc-row');
+
+  const row3 = rows.at(3);
+  const btn1 = row3.find(CalcButton).at(0);
+  const btn2 = row3.find(CalcButton).at(1);
   const btnAdd = row3.find(CalcButton).at(3);
 
   const row4 = rows.at(4);
@@ -221,10 +244,100 @@ it('1 + 2 = 3 = -> 5', () => {
   btnAdd.simulate('click');
   btn2.simulate('click');
   btnEqual.simulate('click');
+
+  expect(app.find('.calc-display').text()).toBe('3');
+});
+
+it('1 x 2 ÷ 4 x -> 0.5', () => {
+  const app = mount(<CalcApp />);
+
+  const rows = app.find('.calc-row');
+
+  const row3 = rows.at(3);
+  const btn1 = row3.find(CalcButton).at(0);
+  const btn2 = row3.find(CalcButton).at(1);
+
+  const row0 = rows.at(0);
+  const btnDiv = row0.find(CalcButton).at(3);
+
+  const row1 = rows.at(1);
+  const btnMultiple = row1.find(CalcButton).at(3);
+
+  const row2 = rows.at(2);
+  const btn4 = row2.find(CalcButton).at(0);
+
+  btn1.simulate('click');
+  btnMultiple.simulate('click');
+  btn2.simulate('click');
+  btnDiv.simulate('click');
+  btn4.simulate('click');
+  btnMultiple.simulate('click');
+
+  expect(app.find('.calc-display').text()).toBe('0.5');
+});
+
+it('1 + 2 + 4 + -> 7', () => {
+  const app = mount(<CalcApp />);
+
+  const rows = app.find('.calc-row');
+
+  const row3 = rows.at(3);
+  const btn1 = row3.find(CalcButton).at(0);
+  const btn2 = row3.find(CalcButton).at(1);
+  const btnAdd = row3.find(CalcButton).at(3);
+
+  const row2 = rows.at(2);
+  const btn4 = row2.find(CalcButton).at(0);
+
+  btn1.simulate('click');
+  btnAdd.simulate('click');
+  btn2.simulate('click');
+  btnAdd.simulate('click');
+  btn4.simulate('click');
+  btnAdd.simulate('click');
+
+  expect(app.find('.calc-display').text()).toBe('7');
+});
+
+it('+ - = -> 0', () => {
+  const app = mount(<CalcApp />);
+  const rows = app.find('.calc-row');
+  const btnAdd = rows.at(3).find(CalcButton).at(3);
+  const btnMinus = rows.at(2).find(CalcButton).at(3);
+  const btnEqual = rows.at(4).find(CalcButton).at(2);
+
+  btnAdd.simulate('click');
+  btnMinus.simulate('click');
+  btnEqual.simulate('click');
+
+  expect(app.find('.calc-display').text()).toBe('0');
+});
+
+it('3 = -> 3', () => {
+  const app = mount(<CalcApp />);
+  const rows = app.find('.calc-row');
+  const btn3 = rows.at(3).find(CalcButton).at(2);
+  const btnEqual = rows.at(4).find(CalcButton).at(2);
+
   btn3.simulate('click');
   btnEqual.simulate('click');
 
-  expect(app.find('.calc-display').text()).toBe('5');
+  expect(app.find('.calc-display').text()).toBe('3');
+});
+
+
+it('show not implement', () => {
+  const app = mount(<CalcApp />);
+
+  const rows = app.find('.calc-row');
+
+  const row0 = rows.at(0);
+  const btnAddMinus = row0.find(CalcButton).at(1);
+
+  btnAddMinus.simulate('click');
+
+  //expect(console.warn).toBeCalled();
+  //expect(console.warn).toBeCalledWith('This function is not implemented yet.');
 });
 
 

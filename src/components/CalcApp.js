@@ -23,17 +23,14 @@ class CalcApp extends React.Component {
     this.setState({ numberString: '0', initial: true, pendingNum: null, pendingOpt: '', lastPress: null });
   }
 
-  showNotImplemented() {
-    console.warn('This function is not implemented yet.');
-  }
-
   pressNumber(number) {
     let newNumber = this.state.numberString;
     if (this.state.initial === true) {
       newNumber = number;
       this.setState({ initial: false });
-    } else if (this.state.pendingOpt!=='') {
+    } else if (this.state.lastPress==='opt') {
       newNumber = number;
+      this.setState({ pendingNum: this.state.numberString });
     } else {
       newNumber = this.state.numberString + number;
     }
@@ -42,11 +39,11 @@ class CalcApp extends React.Component {
 
   pressOperator(newOperator) {
     if (this.state.initial === true) {
-      //nothing happens!
+      //nothing happens!tested!
     } else if (this.state.pendingNum===null) {
-      this.setState({ pendingOpt: newOperator, pendingNum: this.state.numberString });
+      this.setState({ pendingOpt: newOperator, pendingNum: this.state.numberString });//tested!!
     } else if (this.state.lastPress==='opt') {
-      this.setState({ pendingOpt: newOperator, pendingNum: this.state.numberString });
+      this.setState({ pendingOpt: newOperator, pendingNum: this.state.numberString });//tested!!
     } else {
       const operator = this.state.pendingOpt;
       const newNumberString = this.state.pendingNum;
@@ -58,7 +55,8 @@ class CalcApp extends React.Component {
         newNumber -= nowNumber;
       } else if (operator==='x') {
         newNumber *= nowNumber;
-      } else if (operator==='/') {
+      } else {
+      //} else if (operator==='÷') {
         newNumber /= nowNumber;
       }
       this.setState({ numberString: newNumber, pendingOpt: newOperator, pendingNum: null });
@@ -68,7 +66,7 @@ class CalcApp extends React.Component {
 
   pressEqual(garbage) {
     if (this.state.initial === true) {
-      //nothing happens!
+      //nothing happens!tested
     } else {
       const operator = this.state.pendingOpt;
       if (operator !== '') {
@@ -81,11 +79,13 @@ class CalcApp extends React.Component {
           newNumber -= nowNumber;
         } else if (operator==='x') {
           newNumber *= nowNumber;
-        } else if (operator==='/') {
+        } else {
+      //} else if (operator==='÷') {
           newNumber /= nowNumber;
         }
         this.setState({ initial: true, numberString: newNumber, pendingOpt: '', pendingNum: null, lastPress: null });
       }
+      //tested!
     }
   }
 
@@ -98,8 +98,8 @@ class CalcApp extends React.Component {
           </div>
           <div className="calc-row">
             <CalcButton onClick={this.resetState.bind(this)}>AC</CalcButton>
-            <CalcButton onClick={this.showNotImplemented.bind(this)}>+/-</CalcButton>
-            <CalcButton onClick={this.showNotImplemented.bind(this)}>%</CalcButton>
+            <CalcButton>+/-</CalcButton>
+            <CalcButton>%</CalcButton>
             <CalcButton className="calc-operator" onClick={this.pressOperator}>÷</CalcButton>
           </div>
           <div className="calc-row">
@@ -122,7 +122,7 @@ class CalcApp extends React.Component {
           </div>
           <div className="calc-row">
             <CalcButton className="calc-number bigger-btn" onClick={this.pressNumber}>0</CalcButton>
-            <CalcButton onClick={this.showNotImplemented.bind(this)}>.</CalcButton>
+            <CalcButton>.</CalcButton>
             <CalcButton className="calc-operator" onClick={this.pressEqual}>=</CalcButton>
           </div>
         </div>
